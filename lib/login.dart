@@ -26,6 +26,13 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordController = TextEditingController();
 
   @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
@@ -41,11 +48,10 @@ class _LoginPageState extends State<LoginPage> {
               ],
             ),
             const SizedBox(height: 120.0),
-            // TODO: Remove filled: true values (103)
             TextField(
               controller: _usernameController,
+              cursorColor: const Color(0xFF442B2D),
               decoration: const InputDecoration(
-                filled: true,
                 labelText: 'Username',
               ),
             ),
@@ -54,8 +60,8 @@ class _LoginPageState extends State<LoginPage> {
 
             TextField(
               controller: _passwordController,
+              cursorColor: const Color(0xFF442B2D),
               decoration: const InputDecoration(
-                filled: true,
                 labelText: 'Password',
               ),
               obscureText: true,
