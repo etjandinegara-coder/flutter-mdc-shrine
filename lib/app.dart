@@ -16,7 +16,11 @@ import 'package:flutter/material.dart';
 
 import 'home.dart';
 import 'login.dart';
+import 'package:mdc_100_series/model/product.dart';
+import 'package:mdc_100_series/supplemental/backdrop.dart';
+import 'package:mdc_100_series/supplemental/category_menu_page.dart';
 import 'package:mdc_100_series/supplemental/cut_corners_border.dart';
+
 
 const kShrinePink50 = Color(0xFFFEEAE6);
 const kShrinePink100 = Color(0xFFFEDBD0);
@@ -27,9 +31,21 @@ const kShrineErrorRed = Color(0xFFC5032B);
 const kShrineSurfaceWhite = Color(0xFFFFFBFA);
 const kShrineBackgroundWhite = Colors.white;
 
-// TODO: Convert ShrineApp to stateful widget (104)
-class ShrineApp extends StatelessWidget {
+class ShrineApp extends StatefulWidget {
   const ShrineApp({Key? key}) : super(key: key);
+
+  @override
+  State<ShrineApp> createState() => _ShrineAppState();
+}
+
+class _ShrineAppState extends State<ShrineApp> {
+  Category _currentCategory = Category.all;
+
+  void _onCategoryTap(Category category) {
+    setState(() {
+      _currentCategory = category;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,11 +54,18 @@ class ShrineApp extends StatelessWidget {
       initialRoute: '/login',
       routes: {
         '/login': (BuildContext context) => const LoginPage(),
-        // TODO: Change to a Backdrop with a HomePage frontLayer (104)
-        '/': (BuildContext context) => const HomePage(),
-        // TODO: Make currentCategory field take _currentCategory (104)
-        // TODO: Pass _currentCategory for frontLayer (104)
-        // TODO: Change backLayer field value to CategoryMenuPage (104)
+        '/': (BuildContext context) => Backdrop(
+          currentCategory: _currentCategory,
+          frontLayer: HomePage(
+            category: _currentCategory,
+          ),
+          backLayer: CategoryMenuPage(
+            currentCategory: _currentCategory,
+            onCategoryTap: _onCategoryTap,
+          ),
+          frontTitle: const Text('SHRINE'),
+          backTitle: const Text('MENU'),
+        ),
       },
       theme: _buildShrineTheme(),
     );
@@ -71,35 +94,35 @@ ThemeData _buildShrineTheme() {
       elevation: 0,
       centerTitle: true,
     ),
-    inputDecorationTheme: InputDecorationTheme(
+    inputDecorationTheme: const InputDecorationTheme(
       filled: true,
       fillColor: kShrinePink50,
 
-      labelStyle: const TextStyle(
+      labelStyle: TextStyle(
         color: kShrineBrown900,
         fontSize: 14,
       ),
 
-      floatingLabelStyle: const TextStyle(
+      floatingLabelStyle: TextStyle(
         color: kShrineBrown900,
         fontSize: 12,
         fontWeight: FontWeight.w600,
       ),
 
-      contentPadding: const EdgeInsets.symmetric(
+      contentPadding: EdgeInsets.symmetric(
         horizontal: 16,
         vertical: 12,
       ),
 
-      border: const CutCornersBorder(
+      border: CutCornersBorder(
         borderSide: BorderSide(color: kShrineBrown900),
       ),
 
-      enabledBorder: const CutCornersBorder(
+      enabledBorder: CutCornersBorder(
         borderSide: BorderSide(color: kShrineBrown900),
       ),
 
-      focusedBorder: const CutCornersBorder(
+      focusedBorder: CutCornersBorder(
         borderSide: BorderSide(
           color: kShrineBrown900,
           width: 2,

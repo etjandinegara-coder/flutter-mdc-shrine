@@ -16,48 +16,20 @@ import 'package:flutter/material.dart';
 
 import 'package:mdc_100_series/model/product.dart';
 import 'package:mdc_100_series/model/products_repository.dart';
-import 'package:mdc_100_series/supplemental/product_card.dart';
+import 'package:mdc_100_series/supplemental/asymmetric_view.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key, this.category = Category.all,}) : super(key: key);
 
   List<Product> get products =>
-      ProductsRepository.loadProducts(Category.all);
+      ProductsRepository.loadProducts(category);
 
-  // TODO: Add a variable for Category (104)
+  final Category category;
   @override
   Widget build(BuildContext context) {
-    // TODO: Return an AsymmetricView (104)
-    // TODO: Pass Category variable to AsymmetricView (104)
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: () {},
-        ),
-        title: const Text('SHRINE'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () {},
-          ),
-        ],
-      ),
-      body: GridView.builder(
-        padding: const EdgeInsets.all(16.0),
-        itemCount: products.length,
-        gridDelegate:
-        const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 16.0,
-          mainAxisSpacing: 16.0,
-          childAspectRatio: 0.52,
-        ),
-        itemBuilder: (context, index) {
-          return ProductCard(
-            product: products[index],
-          );
-        },
+      body: AsymmetricView(
+        products: products,
       ),
       resizeToAvoidBottomInset: false,
     );
